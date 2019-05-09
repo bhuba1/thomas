@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <link rel=stylesheet type="text/css" href="styles.css" />
-	<meta charset="UTF-8">
-	<title>Thomas a gőz mozdony</title>
-</head>
+<?php include 'head.php'?>
 <body>
 	<?php include 'header.php'?>
 	<h1>Jarat kereső</h1>
