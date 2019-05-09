@@ -32,7 +32,7 @@
 			}
 
 			echo '<h2>Talált járatok: </h2>';
-			echo '<table border="0">';
+			echo '<table border="0" class = "table-dark">';
 			
 			$hon =mb_strtoupper($hon,'UTF-8');
 			$hov =mb_strtoupper($hov,'UTF-8');

@@ -18,7 +18,7 @@
 			}
 
 			echo '<h2>A(z) '. $tableName.'tábla adatai: </h2>';
-			echo '<table border="0" class = "table table-striped table-dark">';
+			echo '<table border="0" class = "table-dark">';
 
 			$select = 'SELECT * FROM '.$tableName;
 			

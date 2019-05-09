@@ -11,11 +11,9 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 ?>
 <!DOCTYPE html>
 <html lang="hu">
-<head>
-</head>
+<?php include 'head.php'?>
 <body>
-
-
+<?php include 'header.php'?>
 <form action="jarat_hozzad.php" method="post">
 <table>
 	<tr>
