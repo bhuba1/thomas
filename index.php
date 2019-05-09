@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <link rel=stylesheet type="text/css" href="styles.css" />
-	<meta charset="UTF-8">
-	<title>Thomas a gőz mozdony</title>
-</head>
+<?php include 'head.php'?>
 <body>
 	<?php
 		include 'header.php';
@@ -22,7 +18,7 @@
 			}
 
 			echo '<h2>A(z) '. $tableName.'tábla adatai: </h2>';
-			echo '<table border="0">';
+			echo '<table border="0" class = "table table-striped table-dark">';
 
 			$select = 'SELECT * FROM '.$tableName;
 			
@@ -36,7 +32,7 @@
 			echo '<tr>';
 			for ($i = 1; $i<=$nfields; $i++){
 				$field = oci_field_name($stid, $i);
-				echo '<td>' . $field . '</td>';
+				echo '<th>' . $field . '</th>';
 			}
 			echo '</tr>';
 
