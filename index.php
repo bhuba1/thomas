@@ -28,7 +28,7 @@
 
 
 			$nfields = oci_num_fields($stid);
-
+		
 			echo '<tr>';
 			for ($i = 1; $i<=$nfields; $i++){
 				$field = oci_field_name($stid, $i);

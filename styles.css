@@ -51,7 +51,14 @@ th, td {
 }
 td {
 	border-right: border: 1px solid #2077CE;
-	
+	background:#FFFFFF;
+	padding:20px;
+	text-align:left;
+	vertical-align:middle;
+	font-weight:300;
+	font-size:18px;
+	text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+	border-right: 1px solid #C1C3D1;
 }
 
 table {
@@ -78,12 +85,10 @@ th {
 tr:nth-child(even) {
     background-color: lightgrey;
 }
-tr:nth-child(odd) {
-    background-color: #909090;
-}
+
 
 tr:first-child {
-	background-color:#939faf;
+	
 	border-bottom:4px solid #9ea7af;
 	font-weight: 900;
 	border-top-radius: 25px;
@@ -195,8 +200,6 @@ input[type="submit"] {
 }
 
 
-
-
 /*** Table Styles **/
 
 
@@ -212,6 +215,10 @@ th {
   text-align:left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
+  border-top-radius:25px;
+}
+thead {
+	border-top-left-radius: 25px;
 }
 tbody {
 	border-top-left-radius: 25px;
@@ -233,6 +240,7 @@ tr {
   font-size:16px;
   font-weight:normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+  border-top-left-radius: 25px;
 }
  
 tr:hover td {
@@ -266,17 +274,6 @@ tr:last-child td:last-child {
   border-bottom-right-radius:25px;
 }
  
-td {
-  background:#FFFFFF;
-  padding:20px;
-  text-align:left;
-  vertical-align:middle;
-  font-weight:300;
-  font-size:18px;
-  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
-  border-right: 1px solid #C1C3D1;
-}
-
 td:last-child {
   border-right: 0px;
 }
@@ -304,6 +301,7 @@ td.text-center {
 td.text-right {
   text-align: right;
 }
+
 
 
 
