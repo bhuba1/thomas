@@ -66,10 +66,10 @@
 			
 			for ($i = 1; $i<=$nfields; $i++){
 				$field = oci_field_name($stid, $i);
-				echo '<td>' . $field . '</td>';
+				echo '<th>' . $field . '</th>';
 
 			}
-			echo '<td>Ár</td>';
+			echo '<th>Ár</th>';
 			echo '</tr>';
 
 
