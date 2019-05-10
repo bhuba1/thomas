@@ -14,44 +14,105 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 <?php include 'head.php'?>
 <body>
 <?php include 'header.php'?>
+<?php 
+	function createSelect($table,$rowName,$name) {
+		try{
+			//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+		}catch(PDOException $e){
+			echo ($e->getMessage());
+		}
+		
+		$select = "SELECT $rowName FROM $table ";
+		
+		$stid = oci_parse($conn, $select);
+
+		oci_execute($stid);
+		oci_execute($stid);
+
+			echo "<select name = '$name'>";
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+				
+				
+				foreach ($row as $item) {
+					echo "<option value='$item'>" . $item . '</option>';
+				}
+				
+			}
+			echo'</select>';
+			oci_close($conn);
+	}
+	function getLastId($table) {
+		try{
+			//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+		}catch(PDOException $e){
+			echo ($e->getMessage());
+		}
+		
+		$select = "SELECT id FROM $table ORDER BY ID DESC OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY";
+		//echo $select;
+		$stid = oci_parse($conn, $select);
+
+		oci_execute($stid);
+		
+		$count = -1;
+		while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+				
+			
+			foreach ($row as $item) {
+				$count = $item;
+			}
+			
+		}
+		
+		$count++;
+		echo "<input type = 'number' name = 'id' value ='$count' readonly/>";
+		oci_close($conn);
+		
+	}
+	
+?>
+
 <form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Azonosító:</th>
-		<td><input type="text" name="id" maxlength="20" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Honnan:</th>
-		<td><input type="text" name="Honnan" maxlength="20" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Hova:</th>
-		<td><input type="text" name="Hova" maxlength="20" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Dátum:</th>
-		<td><input type="date" name="Datum" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Indulás:</th>
-		<td><input type="time" name="Indulas" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Járműszám:</th>
-		<td><input type="text" name="jarmuszam" maxlength="4" size="4"/></td>
-	</tr>
-	<tr>
-		<th>Menetidő:</th>
-		<td><input type="time" name="Menetido" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Hely:</th>
-		<td><input type="number" name="Hely" size="20"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
+	<legend>Új járat hozzáadása</legend>
+	<table>
+		<tr>
+			<th>Azonosító:</th>
+			<td><?php getLastId("jarat");?></td>
+		</tr>
+		<tr>
+			<th>Honnan:</th>
+			<td><?php createSelect("megallok","nev","Honnan") ?></td>
+		</tr>
+		<tr>
+			<th>Hova:</th>
+			<td><?php createSelect("megallok","nev","Hova") ?></td>
+		</tr>
+		<tr>
+			<th>Dátum:</th>
+			<td><input type="date" name="Datum" size="20" value="2010-07-29" min="2010-05-01"/></td>
+		</tr>
+		<tr>
+			<th>Indulás:</th>
+			<td><input type="time" name="Indulas" size="20" value="00:00"/></td>
+		</tr>
+		<tr>
+			<th>Járműszám:</th>
+			<td><?php createSelect("jarmu","jarmuszam","jarmuszam") ?></td>
+		</tr>
+		<tr>
+			<th>Menetidő:</th>
+			<td><input type="time" name="Menetido" size="20" value="02:00"/></td>
+		</tr>
+		<tr>
+			<th>Hely:</th>
+			<td><input type="number" name="Hely" size="20" value = '10' min = '10'/></td>
+		</tr>
+			<td></td>
+			<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb" /></td>
+		</tr>
+	</table>
 </form>
 
 	<?php
@@ -99,32 +160,34 @@ $tns = "
 		oci_close($conn);
 		echo "Járat hozzáadva";
 		
-		
+		//header("Location: hozzaad.php");
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 <!--<a href="index.php">Vissza</a>-->
 	<form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Foglalás azonosítója:</th>
-		<td><input type="number" name="id"/></td>
-	</tr>
-	<tr>
-		<th>Ügyfélazonosító:</th>
-		<td><input type="number" name="ugyfel"/></td>
-	</tr>
-	<tr>
-		<th>Járatazonosító:</th>
-		<td><input type="number" name="jarat"/></td>
-	</tr>
-	<tr>
-		<th>Osztály:</th>
-		<td><input type="number" name="osztaly"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
+		<legend>Új foglalás hozzáadása</legend>
+		<table>
+			<tr>
+				<th>Foglalás azonosítója:</th>
+				<td><?php getLastId("foglalas");?></td>
+			</tr>
+			<tr>
+				<th>Ügyfélazonosító:</th>
+				<td><input type="number" name="ugyfel"/></td>
+			</tr>
+			<tr>
+				<th>Járatazonosító:</th>
+				<td><input type="number" name="jarat"/></td>
+			</tr>
+			<tr>
+				<th>Osztály:</th>
+				<td><input type="number" name="osztaly"/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
+			</tr>
+		</table>
 </form>
 
 	<?php
@@ -167,28 +230,29 @@ $tns = "
 		oci_close($conn);
 		echo "Foglalás hozzáadva";
 		
-		
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 	<form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Járműszám:</th>
-		<td><input type="text" name="Jarmuszam" maxlength="4" size="4"/></td>
-	</tr>
-	<tr>
-		<th>Férőhely:</th>
-		<td><input type="number" name="Ferohely"/></td>
-	</tr>
-	<tr>
-		<th>Osztály:</th>
-		<td><input type="number" name="Osztaly"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
-</form>
+		<legend>Új jármű hozzáadása</legend>
+		<table>
+			<tr>
+				<th>Járműszám:</th>
+				<td><input type="text" name="Jarmuszam" maxlength="4" size="4" required /></td>
+			</tr>
+			<tr>
+				<th>Férőhely:</th>
+				<td><input type="number" name="Ferohely" value='10' min = '10'/></td>
+			</tr>
+			<tr>
+				<th>Osztály:</th>
+				<td><input type="number" name="Osztaly" value='1' min = '1' max = '2'/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
 
 	<?php
 $tns = "  
@@ -228,28 +292,29 @@ $tns = "
 		oci_close($conn);
 		echo "Jármű hozzáadva";
 		
-		
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 	
 	<form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Név:</th>
-		<td><input type="text" name="nev" maxlength="40" size="30"/></td>
-	</tr>
-	<tr>
-		<th>Megye:</th>
-		<td><input type="text" name="megye" maxlength="40" size="30"/></td>
-	</tr>
-	<tr>
-		<th>Város:</th>
-		<td><input type="text" name="varos" maxlength="40" size="30"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
+		<legend>Új állomás hozzáadása</legend>
+		<table>
+			<tr>
+				<th>Név:</th>
+				<td><input type="text" name="nev" maxlength="40" size="30" required/></td>
+			</tr>
+			<tr>
+				<th>Megye:</th>
+				<td><input type="text" name="megye" maxlength="40" size="30" required/></td>
+			</tr>
+			<tr>
+				<th>Város:</th>
+				<td><input type="text" name="varos" maxlength="40" size="30" required/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
+			</tr>
+		</table>
 </form>
 
 	<?php
@@ -291,36 +356,37 @@ $tns = "
 		oci_close($conn);
 		echo "Megálló hozzáadva";
 		
-		
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 	<form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Azonosító:</th>
-		<td><input type="number" name="id"/></td>
-	</tr>
-	<tr>
-		<th>Név:</th>
-		<td><input type="text" name="Nev" maxlength="50" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Város:</th>
-		<td><input type="text" name="Varos" maxlength="50" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Utca:</th>
-		<td><input type="text" name="Utca" size="50"/></td>
-	</tr>
-	<tr>
-		<th>Házszám:</th>
-		<td><input type="number" name="Hazszam"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
-</form>
+		<legend>Új ügyfél hozzáadása</legend>
+		<table>
+			<tr>
+				<th>Azonosító:</th>
+				<td><?php getLastId("ugyfel");?></td>
+			</tr>
+			<tr>
+				<th>Név:</th>
+				<td><input type="text" name="Nev" maxlength="50" size="20"/></td>
+			</tr>
+			<tr>
+				<th>Város:</th>
+				<td><?php createSelect("megallok","varos","Varos") ?></td>
+			</tr>
+			<tr>
+				<th>Utca:</th>
+				<td><input type="text" name="Utca" size="50"/></td>
+			</tr>
+			<tr>
+				<th>Házszám:</th>
+				<td><input type="number" name="Hazszam" value = '1' min = '1' /></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
 
 	<?php
 $tns = "  
@@ -362,29 +428,30 @@ $tns = "
 		oci_close($conn);
 		echo "Ügyfél hozzáadva";
 		
-		
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 	
 	<form action="hozzaad.php" method="post">
-<table>
-	<tr>
-		<th>Első város:</th>
-		<td><input type="text" name="Varos1" maxlength="40" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Második város:</th>
-		<td><input type="text" name="Varos2" maxlength="40" size="20"/></td>
-	</tr>
-	<tr>
-		<th>Távolság:</th>
-		<td><input type="number" name="Tavolsag" size="20"/></td>
-	</tr>
-		<td></td>
-		<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
-	</tr>
-</table>
-</form>
+		<legend>Új távolság hozzáadása</legend>
+		<table>
+			<tr>
+				<th>Első város:</th>
+				<td><?php createSelect("megallok","nev","Varos1") ?></td>
+			</tr>
+			<tr>
+				<th>Második város:</th>
+				<td><?php createSelect("megallok","nev","Varos2") ?></td>
+			</tr>
+			<tr>
+				<th>Távolság:</th>
+				<td><input type="number" name="Tavolsag" size="20" value='10' min = '2'/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
 
 	<?php
 $tns = "  
@@ -425,7 +492,7 @@ $tns = "
 		oci_close($conn);
 		echo "Várostáv hozzáadva";
 		
-		
+		echo "<meta http-equiv=refresh content=\"0; URL=hozzaad.php\">";
 	}
 	?>
 </body>
