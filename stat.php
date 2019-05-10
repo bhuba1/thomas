@@ -18,7 +18,7 @@
 				//echo "Sikeres kapcsolodás!";
 			}
 
-			echo '<h3>1. 100km-nél messzebbre közlekedpk járatok ezk az állomások között</h3>';
+			echo '<h3>1. 100km-nél messzebbre közlekedpk járatok száma ezk az állomások között</h3>';
 			echo '<table border="0" class = "table-dark">';
 
 			$select = 'SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
