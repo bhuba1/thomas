@@ -43,13 +43,17 @@
 			."%' AND UPPER(hova) LIKE '%".$hov
 			."%' AND datum >= TO_DATE('".$date."','YYYY-MM-DD')";
 			*/
-
-			$select = "SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat"
+			
+			/*$select = "SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat"
 			." WHERE (UPPER(honnan) LIKE '%".$hon
 			."%' AND UPPER(hova) LIKE '%".$hov
 			."%' AND datum >= TO_DATE('".$date."','YYYY-MM-DD')) AND ("
-			."(jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2) AND "
-			."(UPPER(varos1) LIKE '%".$hon."%' AND UPPER(varos2) LIKE '%".$hov."%') OR (UPPER(varos2) LIKE '%".$hon."%' AND UPPER(varos1) LIKE '%".$hov."%'))";
+			."(jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)) AND "
+			."(UPPER(varos1) LIKE UPPER(honnan) AND UPPER(varos2) LIKE UPPER(hova)) OR (UPPER(varos2) LIKE UPPER(honnan) AND UPPER(varos1) LIKE UPPER(hova))";*/
+			$select = "SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat "
+			."WHERE ((UPPER(honnan) LIKE '%".$hon."%' AND UPPER(hova) LIKE '%".$hov."%' AND datum >= TO_DATE('".$date."','YYYY-MM-DD')) "
+			."AND ((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)"
+			."AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))))";
 			//echo $select;
 			$stid = oci_parse($conn, $select);
 
@@ -90,9 +94,13 @@
 			
 			//echo "".$_POST['date'];
 			//echo $_POST['type'];
-
-		   createTable("Jarat",$_POST['hon'],$_POST['hov'],$_POST['date'],$_POST['type']);
-		  // header('Location: keszlet.php');
+			if(!strcmp(strtoupper($_POST['hon']),strtoupper($_POST['hov']))) {
+				echo 'asd';
+				header("Location: jarat.php");
+				
+			}
+			createTable("Jarat",$_POST['hon'],$_POST['hov'],$_POST['date'],$_POST['type']);
+			// header('Location: keszlet.php');
 		}
 	?>
 </body>

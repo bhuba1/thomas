@@ -147,12 +147,15 @@ INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) 
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (7, 'Gyor VA', 'Pecs VA', TO_DATE('2018-03-08','YYYY-MM-DD'), '10:10', 'V2', '07:08', 19);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (8, 'Szeged Szemelyi Palyaudvar', 'Pecs VA', TO_DATE('2018-02-21','YYYY-MM-DD'), '16:09', 'B2', '5:28', 62);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (9, 'Szeged Szemelyi Palyaudvar', 'Debrecen VA', TO_DATE('2018-04-11','YYYY-MM-DD'), '12:05', 'B3', '9:09', 174);
+
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (10, 'Debrecen VA', 'Szeged Szemelyi Palyaudvar', TO_DATE('2018-07-19','YYYY-MM-DD'), '02:00', 'V8', '3:10', 78);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (11, 'Debrecen VA', 'Budapest Keleti', TO_DATE('2018-07-08','YYYY-MM-DD'), '0:40', 'B1', '01:52', 54);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (12, 'Budapest Keleti', 'Debrecen VA', TO_DATE('2018-05-29','YYYY-MM-DD'), '9:40', 'A2', '09:30', 173);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (13, 'Gyor VA', 'Szeged Szemelyi Palyaudvar', TO_DATE('2018-07-19','YYYY-MM-DD'), '23:40', 'V2', '02:11', 15);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (14, 'Szeged Szemelyi Palyaudvar', 'Budapest Keleti', TO_DATE('2018-05-22','YYYY-MM-DD'), '03:30', 'B1', '05:15', 17);
 INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (15, 'Gyor VA', 'Debrecen VA', TO_DATE('2018-05-19','YYYY-MM-DD'), '23:45', 'B1', '04:55', 31);
+INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (16, 'Szeged Szemelyi Palyaudvar', 'Zalaegerszeg VA', TO_DATE('2018-04-11','YYYY-MM-DD'), '12:05', 'B3', '5:45', 174);
+INSERT INTO jarat (id, Honnan, Hova, Datum, Indulas, jarmuszam, Menetido, Hely) VALUES (17, 'Zalaegerszeg VA', 'Pecs VA', TO_DATE('2018-04-12','YYYY-MM-DD'), '12:05', 'B3', '6:45', 174);
 
 CREATE TABLE foglalas (
 	id INT NOT NULL,
