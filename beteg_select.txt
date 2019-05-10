@@ -1,2 +1,9 @@
 ﻿SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat WHERE (UPPER(honnan) LIKE '%SZEGED%' AND UPPER(hova) LIKE '%BUDA%' AND datum >= TO_DATE('2010-07-29','YYYY-MM-DD')) AND ((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2) AND (UPPER(varos1) LIKE '%SZEGED%' AND UPPER(varos2) LIKE '%BUDA%') OR (UPPER(varos2) LIKE '%SZEGED%' AND UPPER(varos1) LIKE '%BUDA%'));
-ASD
+
+
+// Azoknak a járatoknak a száma amelyek 100kmnél nagyobb távot tesznek meg két állomás között
+
+SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
+WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
+AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
+GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC;

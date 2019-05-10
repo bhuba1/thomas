@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <link rel=stylesheet type="text/css" href="styles.css" />
-	<meta charset="UTF-8">
-	<title>Thomas a gőz mozdony</title>
-</head>
+<?php include 'head.php'?>
 <body>
 	<?php include 'header.php'?>
 	<h1>Statisztikák</h1>
 	<?php
-		function createTable($tableName) {
+		function createTable() {
 			
 			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
 
@@ -22,10 +18,13 @@
 				//echo "Sikeres kapcsolodás!";
 			}
 
-			echo '<h2>A(z) '. $tableName.'tábla adatai: </h2>';
-			echo '<table border="0">';
+			echo '<h3>1. 100km-nél messzebbre közlekedpk járatok ezk az állomások között</h3>';
+			echo '<table border="0" class = "table-dark">';
 
-			$select = 'SELECT * FROM '.$tableName;
+			$select = 'SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
+					WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
+					AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
+					GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC';
 			
 			$stid = oci_parse($conn, $select);
 
@@ -37,7 +36,7 @@
 			echo '<tr>';
 			for ($i = 1; $i<=$nfields; $i++){
 				$field = oci_field_name($stid, $i);
-				echo '<td>' . $field . '</td>';
+				echo '<th>' . $field . '</th>';
 			}
 			echo '</tr>';
 
@@ -56,6 +55,7 @@
 			echo '</table>';
 			oci_close($conn);
 		}
+		createTable();
 	?>
 	
 </body>
