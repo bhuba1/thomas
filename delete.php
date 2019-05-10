@@ -89,45 +89,45 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 	</form>
 
 	<?php
-$tns = "  
-(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-	  
-      (SID = xe)
-    )
-  )";
+		$tns = "  
+		(DESCRIPTION =
+			(ADDRESS_LIST =
+			  (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+			)
+			(CONNECT_DATA =
+			  
+			  (SID = xe)
+			)
+		  )";
   
  
-	try{
-		//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
-		$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
-	}catch(PDOException $e){
-    echo ($e->getMessage());
-	}
-	
-	if( isset($_POST['id'])){
+		try{
+			//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+		}catch(PDOException $e){
+		echo ($e->getMessage());
+		}
 		
-		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
-		
-		$id = $_POST['id'];
-		
-		
-		$sql = "DELETE FROM jarat WHERE id = '$id'";
+		if( isset($_POST['id'])){
+			
+			$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+			
+			$id = $_POST['id'];
+			
+			
+			$sql = "DELETE FROM jarat WHERE id = '$id'";
 
-		
-		$stid1 = oci_parse($conn, $q);
-		oci_execute($stid1);
-		$stid = oci_parse($conn, $sql);
-		oci_execute($stid);
-		oci_close($conn);
-		echo "Járat Törölve";
-		
-		//header("Location: hozzaad.php");
-		echo "<meta http-equiv=refresh content=\"0; URL=delete.php\">";
-	}
+			
+			$stid1 = oci_parse($conn, $q);
+			oci_execute($stid1);
+			$stid = oci_parse($conn, $sql);
+			oci_execute($stid);
+			oci_close($conn);
+			echo "Járat Törölve";
+			
+			//header("Location: hozzaad.php");
+			echo "<meta http-equiv=refresh content=\"0; URL=delete.php\">";
+		}
 	?>
 	<form action="delete.php" method="post">
 		<legend>Foglás törlése</legend>
