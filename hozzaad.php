@@ -67,7 +67,7 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 		}
 		
 		$count++;
-		echo "<input type = 'number' name = 'id' value ='$count' readonly/>";
+		echo "<input type = 'number' name = 'id' value ='$count' max = '$count' min = '1' readonly/>";
 		oci_close($conn);
 		
 	}
