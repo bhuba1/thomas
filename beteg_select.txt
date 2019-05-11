@@ -1,14 +1,18 @@
 ﻿SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat WHERE (UPPER(honnan) LIKE '%SZEGED%' AND UPPER(hova) LIKE '%BUDA%' AND datum >= TO_DATE('2010-07-29','YYYY-MM-DD')) AND ((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2) AND (UPPER(varos1) LIKE '%SZEGED%' AND UPPER(varos2) LIKE '%BUDA%') OR (UPPER(varos2) LIKE '%SZEGED%' AND UPPER(varos1) LIKE '%BUDA%'));
 
 
-// Azoknak a járatoknak a száma amelyek 100kmnél nagyobb távot tesznek meg két állomás között
-
+// 1. Azoknak a járatoknak a száma amelyek 100kmnél nagyobb távot tesznek meg két állomás között
 SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
 WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
 AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
 GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC;
 
-//Egyes járatokra foglalt helyek száma
-
+// 2. Egyes járatokra foglalt helyek száma
 SELECT honnan,hova, COUNT(foglalas.id)As "Foglalasok száma" FROM jarat, foglalas 
 WHERE jarat.id = foglalas.jarat GROUP BY honnan,hova ORDER BY "Foglalasok száma" DESC;
+
+// 3. Egyes megállókból induló járatok száma
+SELECT nev as "Indul", COUNT(nev)AS "db" FROM jarat, megallok WHERE jarat.honnan = megallok.nev GROUP BY nev ORDER BY "db" DESC;
+
+// 4. Egyes megállókba érkező járatok száma
+SELECT nev as "Érkezik", COUNT(nev)AS "db" FROM jarat, megallok WHERE jarat.hova = megallok.nev GROUP BY nev ORDER BY "db" DESC;

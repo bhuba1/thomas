@@ -67,6 +67,20 @@
 		$text = "2. Egyes járatokra foglalt helyek száma";
 		
 		createTable($select,$text);
+		
+		$select = 'SELECT nev as "Indul", COUNT(nev)AS "db" FROM jarat, megallok 
+		WHERE jarat.honnan = megallok.nev GROUP BY nev ORDER BY "db" DESC';
+		
+		$text = "3. Egyes megállókból induló járatok száma";
+		
+		createTable($select,$text);
+		
+		$select = 'SELECT nev as "Érkezik", COUNT(nev)AS "db" FROM jarat, megallok 
+		WHERE jarat.hova = megallok.nev GROUP BY nev ORDER BY "db" DESC';
+		
+		$text = "4. Egyes megállókba érkező járatok száma";
+		
+		createTable($select,$text);
 	?>
 	
 </body>
