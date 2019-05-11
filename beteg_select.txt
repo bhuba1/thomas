@@ -16,3 +16,14 @@ SELECT nev as "Indul", COUNT(nev)AS "db" FROM jarat, megallok WHERE jarat.honnan
 
 // 4. Egyes megállókba érkező járatok száma
 SELECT nev as "Érkezik", COUNT(nev)AS "db" FROM jarat, megallok WHERE jarat.hova = megallok.nev GROUP BY nev ORDER BY "db" DESC;
+
+// 5. Egyes járművek hány járathoz tartoznak
+SELECT jarmu.jarmuszam as "Jármű szám", COUNT(jarmu.jarmuszam) as "db" FROM jarmu, jarat 
+WHERE jarmu.jarmuszam = jarat.jarmuszam GROUP BY jarmu.jarmuszam ORDER BY "db" DESC;
+
+// 6. nem jó
+
+SELECT jarmu.jarmuszam as "Jármuszám", SUM(tavolsag) as "Távolság (km)" FROM jarmu, jarat,megallok, varostav
+WHERE jarat.jarmuszam = jarmu.jarmuszam AND (megallok.nev = jarat.honnan )
+AND (varostav.varos1 = megallok.nev)
+GROUP BY jarmu.jarmuszam ORDER BY "Távolság (km)" DESC;

@@ -81,6 +81,26 @@
 		$text = "4. Egyes megállókba érkező járatok száma";
 		
 		createTable($select,$text);
+		
+		$select = 'SELECT jarmu.jarmuszam as "Jármű szám", COUNT(jarmu.jarmuszam) as "db" FROM jarmu, jarat 
+		WHERE jarmu.jarmuszam = jarat.jarmuszam GROUP BY jarmu.jarmuszam ORDER BY "db" DESC';
+		
+		$text = "5. Egyes járművek hány járathoz tartoznak";
+		
+		createTable($select,$text);
+
+		
+		$select = 'SELECT "Jármuszám", SUM("Távolság (km)" )as "Távolság (km)" FROM (
+		SELECT jarat.jarmuszam as "Jármuszám", SUM(tavolsag) as "Távolság (km)" 
+		FROM varostav, jarat
+		WHERE (jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) 
+		OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2) 
+		GROUP BY jarat.jarmuszam,jarat.id ORDER BY jarat.id) 
+		GROUP BY "Jármuszám" ORDER BY "Távolság (km)" DESC';
+		
+		$text = "6. Az egyes jarmuvek mennyi km-t tesznek meg";
+		
+		createTable($select,$text);
 	?>
 	
 </body>
