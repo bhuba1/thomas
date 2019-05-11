@@ -6,7 +6,7 @@
 	<?php include 'header.php'?>
 	<h1>Statisztikák</h1>
 	<?php
-		function createTable($s) {
+		function createTable($s,$text) {
 			
 			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
 
@@ -18,7 +18,7 @@
 				//echo "Sikeres kapcsolodás!";
 			}
 
-			echo '<h3>1. 100km-nél messzebbre közlekedő járatok száma ezek az állomások között</h3>';
+			echo "<h3>".$text."</h3>";
 			echo '<table border="0" class = "table-dark">';
 
 			$select = $s;
@@ -56,7 +56,17 @@
 					WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
 					AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
 					GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC';
-		createTable($select);
+		
+		$text = "1. 100km-nél messzebbre közlekedő járatok száma ezek az állomások között";
+		
+		createTable($select,$text);
+		
+		
+		$select = 'SELECT honnan as "Honnan",hova as "Hova", COUNT(foglalas.id)As "Foglalasok száma" FROM jarat, foglalas 
+		WHERE jarat.id = foglalas.jarat GROUP BY honnan,hova ORDER BY "Foglalasok száma" DESC';
+		$text = "2. Egyes járatokra foglalt helyek száma";
+		
+		createTable($select,$text);
 	?>
 	
 </body>

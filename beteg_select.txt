@@ -7,3 +7,8 @@ SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(i
 WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
 AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
 GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC;
+
+//Egyes járatokra foglalt helyek száma
+
+SELECT honnan,hova, COUNT(foglalas.id)As "Foglalasok száma" FROM jarat, foglalas 
+WHERE jarat.id = foglalas.jarat GROUP BY honnan,hova ORDER BY "Foglalasok száma" DESC;
