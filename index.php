@@ -52,13 +52,31 @@
 			oci_close($conn);
 		}
 		
-		createTable('Megallok');
+		/*createTable('Megallok');
 		createTable('Ugyfel');
 		createTable('Varostav');
 		createTable('Jarat');
 		createTable('Jarmu');
-		createTable('Foglalas');
+		createTable('Foglalas');*/
 		
 	?>
+	<form method="POST">
+		<select  name="table">
+			<option value="Megallok" selected="selected">Megállok</option>
+			<option value="Ugyfel">Ugyfel</option>
+			<option value="Varostav">Varostav</option>
+			<option value="Jarat">Járat</option>
+			<option value="Jarmu">Jármü</option>
+			<option value="Foglalas">Foglalás</option>
+		</select>
+		<input type="submit" name = "listazas" value="Listázás">
+
+	</form>
+	<?php
+		if( isset($_POST['table']) ){
+			createTable($_POST['table']);
+		}
+	?>
+	
 </body>
 </html>

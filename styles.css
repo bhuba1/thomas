@@ -182,6 +182,10 @@ select[name="type"] {
 	margin-left: 70px;
 	margin-top: 5px;
 }
+select[name="table"] {
+	margin-left: 70px;
+	margin-top: 5px;
+}
 
 input[type="submit"] {
 	
