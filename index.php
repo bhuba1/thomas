@@ -62,7 +62,7 @@
 	?>
 	<form method="POST">
 		<select  name="table">
-			<option value="Megallok" selected="selected">Megállok</option>
+			<option value="Megallok">Megállok</option>
 			<option value="Ugyfel">Ugyfel</option>
 			<option value="Varostav">Varostav</option>
 			<option value="Jarat">Járat</option>

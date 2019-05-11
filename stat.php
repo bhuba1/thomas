@@ -18,7 +18,7 @@
 				//echo "Sikeres kapcsolodás!";
 			}
 
-			echo '<h3>1. 100km-nél messzebbre közlekedő járatok száma ezk az állomások között</h3>';
+			echo '<h3>1. 100km-nél messzebbre közlekedő járatok száma ezek az állomások között</h3>';
 			echo '<table border="0" class = "table-dark">';
 
 			$select = $s;

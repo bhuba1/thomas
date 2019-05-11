@@ -8,8 +8,6 @@
 		<li><div class="menu_elem" ><a href="update.php" class="<?php if(!strcmp(basename($_SERVER['PHP_SELF']),"update.php")) {echo 'active';}?>">Módosítás</a></div></li>
 		<li><div class="menu_elem" ><a href="stat.php" class="<?php if(!strcmp(basename($_SERVER['PHP_SELF']),"stat.php")) {echo 'active';}?>">Statisztika</a></div></li>
 		
-		
-		
 	</div>
 
 </nav>

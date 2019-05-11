@@ -56,11 +56,11 @@
 			."AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))))";
 			//echo $select;
 			$stid = oci_parse($conn, $select);
-
 			oci_execute($stid);
-
+			
 
 			$nfields = oci_num_fields($stid);
+			//echo $nfields;
 
 			echo '<tr>';
 			
@@ -70,21 +70,30 @@
 
 			}
 			echo '<th>Ár</th>';
+			echo '<th>Vásárlás</th>';
 			echo '</tr>';
 
 
 			oci_execute($stid);
-
-
+			
+			$last = 0;
 			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
-				$last = 0;
+				
 				echo '<tr>';
 				foreach ($row as $item) {
+					
 					echo '<td>' . $item . '</td>';
 					$last = $item;
 				}
 				echo '<td>'.($last*20*$type).'Ft</td>';
+				echo "<td><a href = '#' class = 'jegy'>Jegyvásárlás</a></td>";
+				
 				echo '</tr>';
+			}
+			
+			if($last == 0) {
+				$nfields++;
+				echo "<tr><td colspan='$nfields'><p class = 'center'>Sajnos nincs találat</p></td></tr>";
 			}
 			echo '</table>';
 			oci_close($conn);
@@ -96,7 +105,7 @@
 			//echo $_POST['type'];
 			if(!strcmp(strtoupper($_POST['hon']),strtoupper($_POST['hov']))) {
 				echo 'asd';
-				header("Location: jarat.php");
+				//header("Location: jarat.php");
 				
 			}
 			createTable("Jarat",$_POST['hon'],$_POST['hov'],$_POST['date'],$_POST['type']);
