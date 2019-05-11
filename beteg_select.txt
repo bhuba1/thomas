@@ -21,7 +21,7 @@ SELECT nev as "Érkezik", COUNT(nev)AS "db" FROM jarat, megallok WHERE jarat.hov
 SELECT jarmu.jarmuszam as "Jármű szám", COUNT(jarmu.jarmuszam) as "db" FROM jarmu, jarat 
 WHERE jarmu.jarmuszam = jarat.jarmuszam GROUP BY jarmu.jarmuszam ORDER BY "db" DESC;
 
-// 6. nem jó
+// 6. Az egyes jarmuvek mennyi km-t tesznek meg
 
 SELECT jarmu.jarmuszam as "Jármuszám", SUM(tavolsag) as "Távolság (km)" FROM jarmu, jarat,megallok, varostav
 WHERE jarat.jarmuszam = jarmu.jarmuszam AND (megallok.nev = jarat.honnan )
