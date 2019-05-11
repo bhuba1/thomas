@@ -10,14 +10,13 @@
 	<?php
 		$id = -1;
 		$ar = -1;
-		if(isset($_POST['id'])) {
+		if(isset($_POST['id']) && isset($_POST['ar'])) {
 			$id = $_POST['id'];
-			//echo $id;
-		}
-		if(isset($_POST['ar'])) {
 			$ar = $_POST['ar'];
-			//echo $ar;
+		}else {
+			header("Location: jarat.php");
 		}
+		
 		function createTable($s,$text) {
 			
 			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');

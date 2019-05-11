@@ -221,18 +221,36 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 			$id = $_POST['jarmuid'];
 			
 			
-			$sql = "DELETE FROM jarmu WHERE jarmuszam = '$id'";
-
-			
 			$stid1 = oci_parse($conn, $q);
 			oci_execute($stid1);
+			
+			$sql = "SELECT id FROM jarat WHERE jarmuszam = '$id'";
 			$stid = oci_parse($conn, $sql);
 			oci_execute($stid);
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+				
+				foreach ($row as $item) {
+					//echo '<p>' . $item . ' </p>';
+					$sql = "DELETE FROM foglalas WHERE jarat = '$item'";
+					$stid = oci_parse($conn, $sql);
+					oci_execute($stid);
+				}
+			}
+			
+			$sql = "DELETE FROM jarat WHERE jarmuszam = '$id'";
+			$stid = oci_parse($conn, $sql);
+			oci_execute($stid);
+			
+			$sql = "DELETE FROM jarmu WHERE jarmuszam = '$id'";
+			$stid = oci_parse($conn, $sql);
+			oci_execute($stid);
+			
+			
 			oci_close($conn);
-			echo "Ügyfél Törölve";
+			echo "Jármű Törölve";
 			
 			//header("Location: hozzaad.php");
-			echo "<meta http-equiv=refresh content=\"0; URL=delete.php\">";
+			//echo "<meta http-equiv=refresh content=\"0; URL=delete.php\">";
 		}
 	?>
 	<form action="delete.php" method="post">
