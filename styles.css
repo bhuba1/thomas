@@ -10,9 +10,11 @@ header {
 	border-bottom:1px solid #2077CE;
 	
 }
-body{
-	
-	
+html,body{
+	height:100%;
+    width:100%;
+    padding:0;
+    margin:0;
 	background-color:#414141;
 }
 h1 {
@@ -66,7 +68,8 @@ legend {
 }
 
 table.table-dark {
-	
+	width: 80%;
+	max-width: 80%;
 	font-family: arial, sans-serif;
 	/*border: 2px solid #2077CE;*/
 	border-collapse: collapse;
@@ -99,7 +102,8 @@ tr:first-child.table-dark {
 }
 
 nav {
-	/*min-width:100%;*/
+	min-width:100%;
+	width: 100%;
 	/*overflow:auto;*/
 	
 	background-color:#242424;

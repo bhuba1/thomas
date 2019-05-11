@@ -6,7 +6,7 @@
 	<?php include 'header.php'?>
 	<h1>Statisztikák</h1>
 	<?php
-		function createTable() {
+		function createTable($s) {
 			
 			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
 
@@ -18,13 +18,10 @@
 				//echo "Sikeres kapcsolodás!";
 			}
 
-			echo '<h3>1. 100km-nél messzebbre közlekedpk járatok száma ezk az állomások között</h3>';
+			echo '<h3>1. 100km-nél messzebbre közlekedő járatok száma ezk az állomások között</h3>';
 			echo '<table border="0" class = "table-dark">';
 
-			$select = 'SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
-					WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
-					AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
-					GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC';
+			$select = $s;
 			
 			$stid = oci_parse($conn, $select);
 
@@ -55,7 +52,11 @@
 			echo '</table>';
 			oci_close($conn);
 		}
-		createTable();
+		$select = 'SELECT varostav.varos1 as "Állomás 1",varostav.varos2 as "Állomás 2",count(id) as db FROM varostav, jarat
+					WHERE (((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)
+					AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))) AND tavolsag > 100) 
+					GROUP BY varostav.varos1,varostav.varos2 ORDER BY db DESC';
+		createTable($select);
 	?>
 	
 </body>
