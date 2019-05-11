@@ -50,7 +50,7 @@
 			."%' AND datum >= TO_DATE('".$date."','YYYY-MM-DD')) AND ("
 			."(jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)) AND "
 			."(UPPER(varos1) LIKE UPPER(honnan) AND UPPER(varos2) LIKE UPPER(hova)) OR (UPPER(varos2) LIKE UPPER(honnan) AND UPPER(varos1) LIKE UPPER(hova))";*/
-			$select = "SELECT honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat "
+			$select = "SELECT id, honnan,hova,datum as Dátum, indulas as Indulás,menetido as Menetidő, varostav.tavolsag as távolság FROM varostav, jarat "
 			."WHERE ((UPPER(honnan) LIKE '%".$hon."%' AND UPPER(hova) LIKE '%".$hov."%' AND datum >= TO_DATE('".$date."','YYYY-MM-DD')) "
 			."AND ((jarat.honnan = varostav.varos1 AND jarat.hova = varostav.varos2) OR (jarat.hova = varostav.varos1 AND jarat.honnan = varostav.varos2)"
 			."AND (UPPER(varos1) LIKE  UPPER(honnan) AND UPPER(varos2) LIKE  UPPER(hova)) OR (UPPER(varos2) LIKE  UPPER(honnan) AND UPPER(varos1) LIKE  UPPER(hova))))";
@@ -63,10 +63,18 @@
 			//echo $nfields;
 
 			echo '<tr>';
-			
+			$count = 0;
+			$id = -1;
 			for ($i = 1; $i<=$nfields; $i++){
 				$field = oci_field_name($stid, $i);
-				echo '<th>' . $field . '</th>';
+				if($count > 0) {
+					
+					echo '<th>' . $field . '</th>';
+				}else {
+					$id = $field;
+				}
+				
+				$count++;
 
 			}
 			echo '<th>Ár</th>';
@@ -76,19 +84,40 @@
 
 			oci_execute($stid);
 			
+			$count = 0;
 			$last = 0;
 			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
-				
 				echo '<tr>';
-				foreach ($row as $item) {
+				
 					
-					echo '<td>' . $item . '</td>';
-					$last = $item;
-				}
-				echo '<td>'.($last*20*$type).'Ft</td>';
-				echo "<td><a href = '#' class = 'jegy'>Jegyvásárlás</a></td>";
+					foreach ($row as $item) {
+						if ($count > 0) {
+							echo '<td>' . $item . '</td>';
+							$last = $item;
+						}else {
+							$id = $item;
+							
+						}
+						$count++;
+					}
+					if ($count > 0) {
+						$ar = ($last*20*$type);
+						echo '<td>'.($last*20*$type).'Ft</td>';
+						echo "<td>
+						<form action='buy.php' method = 'POST' class = 'buy'>
+							<input type = 'hidden' value = '$id' name = 'id'/>
+							<input type = 'hidden' value = '$ar' name = 'ar'/>
+							<input type = 'submit' value = 'JegyVásárlás'/>
+						</form>
+						</td>";	
+					}
+					$count = 0;
+					
+					
 				
 				echo '</tr>';
+				
+				
 			}
 			
 			if($last == 0) {

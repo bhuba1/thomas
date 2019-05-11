@@ -56,6 +56,24 @@ legend {
 .jegy {
 	color: orange;
 }
+.buy {
+	padding: 0px;
+	width: 150px;
+	background-color: transparent;
+	border: none;
+	box-shadow: none;
+}
+.buy_form {
+	width:1000px;
+}
+.buy_form .table-dark{
+	box-shadow:none;
+	
+}
+.buy input[type='submit'] {
+	width: 100px;
+	
+}
 .table-dark th, td {
     /*border: 1px solid #2077CE;*/
 	/*background-color:#c7d1e0;*/
