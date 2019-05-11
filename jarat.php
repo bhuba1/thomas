@@ -133,7 +133,7 @@
 			//echo "".$_POST['date'];
 			//echo $_POST['type'];
 			if(!strcmp(strtoupper($_POST['hon']),strtoupper($_POST['hov']))) {
-				echo 'asd';
+				//echo 'asd';
 				//header("Location: jarat.php");
 				
 			}

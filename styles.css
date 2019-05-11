@@ -63,6 +63,9 @@ legend {
 	border: none;
 	box-shadow: none;
 }
+.user {
+	margin: 0 auto;
+}
 .buy_form {
 	width:1000px;
 }

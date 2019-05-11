@@ -141,7 +141,7 @@ $tns = "
 		
 		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
 		
-		 $id = $_POST['id'];
+		$id = $_POST['id'];
 		$Honnan =$_POST['Honnan'];
 		$Hova = $_POST['Hova'];
 		$Datum = $_POST['Datum'];

@@ -151,7 +151,7 @@ $tns = "
 )
 )";
 try{
-			//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
 	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
 }catch(PDOException $e){
 	echo ($e->getMessage());
@@ -174,7 +174,6 @@ if( isset($_POST['fogid'])){
 	oci_close($conn);
 	echo "Ügyfél Törölve";
 
-			//header("Location: hozzaad.php");
 	echo "<meta http-equiv=refresh content=\"0; URL=delete.php\">";
 }
 ?>

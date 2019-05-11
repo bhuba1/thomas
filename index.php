@@ -20,7 +20,7 @@
 			echo '<h2>A(z) '. $tableName.'tábla adatai: </h2>';
 			echo '<table border="0" class = "table-dark">';
 
-			$select = 'SELECT * FROM '.$tableName;
+			$select = 'SELECT * FROM '.$tableName.' ORDER BY 1';
 			
 			$stid = oci_parse($conn, $select);
 
