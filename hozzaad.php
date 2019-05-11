@@ -170,19 +170,19 @@ $tns = "
 		<table>
 			<tr>
 				<th>Foglalás azonosítója:</th>
-				<td><?php getLastId("foglalas");?></td>
+				<td><?php getLastId("foglalas") ?></td>
 			</tr>
 			<tr>
 				<th>Ügyfélazonosító:</th>
-				<td><input type="number" name="ugyfel"/></td>
+				<td><?php createSelect("ugyfel","id","ugyfel") ?></td>
 			</tr>
 			<tr>
 				<th>Járatazonosító:</th>
-				<td><input type="number" name="jarat"/></td>
+				<td><?php createSelect("jarat","id","jarat") ?></td>
 			</tr>
 			<tr>
 				<th>Osztály:</th>
-				<td><input type="number" name="osztaly"/></td>
+				<td><input type="number" name="osztaly" value='1' min = '1' max= '2'/></td>
 			</tr>
 				<td></td>
 				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Hozzáad" class="gomb"/></td>
@@ -221,7 +221,7 @@ $tns = "
 		
 		
 		$sql = "INSERT INTO foglalas Values('".$id."', '".$ugyfel."', '".$jarat."', '".$osztaly."')";
-		echo $sql;
+		//echo $sql;
 		
 		$stid1 = oci_parse($conn, $q);
 		oci_execute($stid1);

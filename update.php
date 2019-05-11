@@ -75,11 +75,11 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 	?>
 
 	<form action="update.php" method="post">
-		<legend>Új járat hozzáadása</legend>
+		<legend>Járat módosítása</legend>
 		<table>
 			<tr>
 				<th>Azonosító:</th>
-				<td><?php getLastId("jarat");?></td>
+				<td><?php createSelect("jarat","id","id") ?></td>
 			</tr>
 			<tr>
 				<th>Honnan:</th>
@@ -167,8 +167,349 @@ if ( $_SESSION["felhasznalo"] != "admin"){
 			echo "Járat updatelve";
 			
 			//header("Location: hozzaad.php");
-			//echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+			echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
 		}
+		
+	?>
+	<form action="update.php" method="post">
+		<legend>Foglalás módosítása</legend>
+		<table>
+			<tr>
+				<th>Foglalás azonosítója:</th>
+				<td><?php createSelect("foglalas","id","id") ?></td>
+			</tr>
+			<tr>
+				<th>Ügyfélazonosító:</th>
+				<td><?php createSelect("ugyfel","id","ugyfel") ?></td>
+			</tr>
+			<tr>
+				<th>Járatazonosító:</th>
+				<td><?php createSelect("jarat","id","jarat") ?></td>
+			</tr>
+			<tr>
+				<th>Osztály:</th>
+				<td><input type="number" name="osztaly" value='1' min = '1' max= '2'/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
+			</tr>
+		</table>
+</form>
+
+	<?php
+$tns = "  
+(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+	  
+      (SID = xe)
+    )
+  )";
+  
+ 
+	try{
+    //$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+	}catch(PDOException $e){
+    echo ($e->getMessage());
+	}
+	
+	if( isset($_POST['id']) &&  isset($_POST['ugyfel']) && isset($_POST['jarat']) && isset($_POST['osztaly'])){
+		
+		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+		
+		$id = $_POST['id'];
+		$ugyfel = $_POST['ugyfel'];
+		$jarat = $_POST['jarat'];
+		$osztaly = $_POST['osztaly'];
+		
+		
+		$sql = "UPDATE foglalas SET 
+		ugyfel = '$ugyfel',
+		jarat = '$jarat',
+		osztaly = '$osztaly' WHERE id = '$id'";
+		//echo $sql;
+		
+		$stid1 = oci_parse($conn, $q);
+		oci_execute($stid1);
+		$stid = oci_parse($conn, $sql);
+		oci_execute($stid);
+		oci_close($conn);
+		echo "Foglalás módosítása";
+		
+		echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+	}
+	?>
+	<form action="update.php" method="post">
+		<legend>Jármű módosítása</legend>
+		<table>
+			<tr>
+				<th>Járműszám:</th>
+				<td><?php createSelect("jarmu","jarmuszam","Jarmuszam") ?></td>
+			</tr>
+			<tr>
+				<th>Férőhely:</th>
+				<td><input type="number" name="Ferohely" value='10' min = '10'/></td>
+			</tr>
+			<tr>
+				<th>Osztály:</th>
+				<td><input type="number" name="Osztaly" value='1' min = '1' max = '2'/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
+
+	<?php
+$tns = "  
+(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+	  
+      (SID = xe)
+    )
+  )";
+  
+ 
+	try{
+    //$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+	}catch(PDOException $e){
+    echo ($e->getMessage());
+	}
+	
+	if( isset($_POST['Jarmuszam']) &&  isset($_POST['Ferohely']) && isset($_POST['Osztaly'])){
+		
+		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+		
+		$Jarmuszam = $_POST['Jarmuszam'];
+		$Ferohely = $_POST['Ferohely'];
+		$Osztaly = $_POST['Osztaly'];
+		
+		$sql = "Update Jarmu SET 
+		ferohely = $Ferohely, 
+		osztaly = $Osztaly WHERE jarmuszam = '$Jarmuszam'";
+
+		
+		$stid1 = oci_parse($conn, $q);
+		oci_execute($stid1);
+		$stid = oci_parse($conn, $sql);
+		oci_execute($stid);
+		oci_close($conn);
+		echo "Jármű módosítása";
+		
+		echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+	}
+	?>
+	
+	<form action="update.php" method="post">
+		<legend>Állomás módosítása</legend>
+		<table>
+			<tr>
+				<th>Név:</th>
+				<td><?php createSelect("megallok","nev","nev") ?></td>
+			</tr>
+			<tr>
+				<th>Megye:</th>
+				<td><input type="text" name="megye" maxlength="40" size="30" required/></td>
+			</tr>
+			<tr>
+				<th>Város:</th>
+				<td><input type="text" name="varos" maxlength="40" size="30" required/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
+			</tr>
+		</table>
+</form>
+
+	<?php
+$tns = "  
+(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+	  
+      (SID = xe)
+    )
+  )";
+  
+ 
+	try{
+    //$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+	}catch(PDOException $e){
+    echo ($e->getMessage());
+	}
+	
+	if( isset($_POST['nev']) &&  isset($_POST['megye']) && isset($_POST['varos'])){
+		
+		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+		
+		$nev = $_POST['nev'];
+		$megye = $_POST['megye'];
+		$varos = $_POST['varos'];
+	
+		
+		$sql = "UPDATE megallok SET megye = '$megye', varos = '$varos' WHERE nev = '$nev'";
+	
+		
+		$stid1 = oci_parse($conn, $q);
+		oci_execute($stid1);
+		$stid = oci_parse($conn, $sql);
+		oci_execute($stid);
+		oci_close($conn);
+		echo "Megálló módosítása";
+		
+		echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+	}
+	?>
+	<form action="update.php" method="post">
+		<legend>Ügyfél módosítása</legend>
+		<table>
+			<tr>
+				<th>Azonosító:</th>
+				<td><?php createSelect("ugyfel","id","id") ?></td>
+			</tr>
+			<tr>
+				<th>Név:</th>
+				<td><input type="text" name="Nev" maxlength="50" size="20"/></td>
+			</tr>
+			<tr>
+				<th>Város:</th>
+				<td><?php createSelect("megallok","varos","Varos") ?></td>
+			</tr>
+			<tr>
+				<th>Utca:</th>
+				<td><input type="text" name="Utca" size="50"/></td>
+			</tr>
+			<tr>
+				<th>Házszám:</th>
+				<td><input type="number" name="Hazszam" value = '1' min = '1' /></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
+
+	<?php
+$tns = "  
+(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+	  
+      (SID = xe)
+    )
+  )";
+  
+ 
+	try{
+    //$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+	}catch(PDOException $e){
+    echo ($e->getMessage());
+	}
+	
+	if( isset($_POST['id']) &&  isset($_POST['Nev']) && isset($_POST['Varos']) && isset($_POST['Utca']) && isset($_POST['Hazszam'])){
+		
+		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+		
+		$id = $_POST['id'];
+		$Nev = $_POST['Nev'];
+		$Varos = $_POST['Varos'];
+		$Utca = $_POST['Utca'];
+		$Hazszam = $_POST['Hazszam'];
+		
+		$sql = "UPDATE Ugyfel SET 
+		nev = '$Nev', 
+		varos = '$Varos', 
+		utca = '$Utca', 
+		hazszam = '$Hazszam' WHERE id = '$id'";
+
+		
+		$stid1 = oci_parse($conn, $q);
+		oci_execute($stid1);
+		$stid = oci_parse($conn, $sql);
+		oci_execute($stid);
+		oci_close($conn);
+		echo "Ügyfél módosítása";
+		
+		echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+	}
+	?>
+	
+	<form action="update.php" method="post">
+		<legend>Távolság módosítása</legend>
+		<table>
+			<tr>
+				<th>Első város:</th>
+				<td><?php createSelect("megallok","nev","Varos1") ?></td>
+			</tr>
+			<tr>
+				<th>Második város:</th>
+				<td><?php createSelect("megallok","nev","Varos2") ?></td>
+			</tr>
+			<tr>
+				<th>Távolság:</th>
+				<td><input type="number" name="Tavolsag" size="20" value='10' min = '2'/></td>
+			</tr>
+				<td></td>
+				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
+			</tr>
+		</table>
+	</form>
+
+	<?php
+		$tns = "  
+		(DESCRIPTION =
+			(ADDRESS_LIST =
+			  (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+			)
+			(CONNECT_DATA =
+			  
+			  (SID = xe)
+			)
+		  )";
+  
+ 
+	try{
+    //$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
+	$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+	}catch(PDOException $e){
+    echo ($e->getMessage());
+	}
+	
+	if( isset($_POST['Varos1']) &&  isset($_POST['Varos2']) && isset($_POST['Tavolsag'])){
+		
+		$q = "ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'";
+		
+		$Varos1 = $_POST['Varos1'];
+		$Varos2 = $_POST['Varos2'];
+		$Tavolsag = $_POST['Tavolsag'];
+		
+		
+		$sql = "UPDATE Varostav SET tavolsag = '$Tavolsag' 
+		WHERE varos1 = '$Varos1' AND varos2 = '$Varos2'";
+
+		
+		$stid1 = oci_parse($conn, $q);
+		oci_execute($stid1);
+		$stid = oci_parse($conn, $sql);
+		oci_execute($stid);
+		oci_close($conn);
+		echo "Várostáv módosítása";
+		
+		echo "<meta http-equiv=refresh content=\"0; URL=update.php\">";
+	}
 	?>
 </body>
 </html>
