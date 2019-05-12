@@ -48,6 +48,28 @@ legend {
 	text-align:center;
 	font-size: 20px;
 }
+.logout {
+	position: relative;
+	margin:0;
+	color: red;
+	overflow: visible;
+	display: block;
+}
+.welcome {
+	margin-top: 10px;
+	text-align: center;
+}
+.egyen {
+	color: green;
+	margin: 0 auto;
+	margin-top: 20px; 
+}
+.logout:visited {
+	color: red;
+}
+.logout:hover {
+	color: yellow;
+}
 .error {
 	color:red;
 	margin: 0 auto;

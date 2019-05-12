@@ -18,6 +18,8 @@
 		if(isset($_POST['id']) && isset($_POST['ar'])) {
 			$id = $_POST['id'];
 			$ar = $_POST['ar'];
+			$GLOBALS['ar'] = $_POST['ar'];
+			//echo $GLOBALS['ar'];
 		}else {
 			//header("Location: jarat.php");
 		}
@@ -206,7 +208,7 @@
 			
 			return $osztaly;
 		}
-		function insert($fogid, $ugyid, $jaratid, $osztaly) {
+		function insert($fogid, $ugyid, $jaratid, $osztaly,$price) {
 			try{
 				//$conn = oci_connect('SYSTEM', 'system', $tns,'UTF8');
 				$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
@@ -214,11 +216,12 @@
 		    echo ($e->getMessage());
 			}
 				
-			
+				$sql = "UPDATE ugyfel SET egyenleg = egyenleg-'$price' WHERE id = '$ugyid'";
+				
+				$stid = oci_parse($conn, $sql);
+				oci_execute($stid);
 				
 				$sql = "INSERT INTO foglalas Values('$fogid', '$ugyid', '$jaratid', '$osztaly')";
-
-				
 				
 				$stid = oci_parse($conn, $sql);
 				oci_execute($stid);
@@ -241,11 +244,13 @@
 			$fogid = getLastId('foglalas');
 			$jaratid = $_POST['id'];
 			$osztaly = getOsztaly($jaratid);
+			$price = $_POST['ar'];
 			
 			echo "<input type='hidden' name = 'ugyid' value='$ugyid'/>";
 			echo "<input type='hidden' name = 'fogid' value='$fogid'/>";
 			echo "<input type='hidden' name = 'jaratid' value='$jaratid'/>";
 			echo "<input type='hidden' name = 'osztaly' value='$osztaly'/>";
+			echo "<input type='hidden' name = 'price' value='$price'/>";
 		?>
 
 		<input type="submit" name = "" value="Megvesz"/>
@@ -260,7 +265,7 @@
 			echo 'Jarat id: '.$jaratid.' ';
 			echo $osztaly;*/
 
-			insert($_POST['fogid'],$_POST['ugyid'], $_POST['jaratid'], $_POST['osztaly']);
+			insert($_POST['fogid'],$_POST['ugyid'], $_POST['jaratid'], $_POST['osztaly'], $_POST['price']);
 		}
 	?>
 </body>

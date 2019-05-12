@@ -5,8 +5,13 @@
 <body>
 	<?php include 'header.php'?>
 	
-	<h2>Bejelentkezés</h2>
 	
+	<?php 
+		if(!isset($_SESSION['name'])) {
+			echo "<h2>Bejelentkezés</h2>";
+		}
+
+	?>
 	
 
 	<?php
@@ -62,6 +67,49 @@
 				return false;
 			}
 			oci_close($conn);
+		}
+		function getEgyenleg($nev) {
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+
+			if(!$conn) {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+					
+			}else {
+				//echo "Sikeres kapcsolodás!";
+			}
+
+			$select = "SELECT egyenleg FROM ugyfel WHERE nev = '$nev'";
+			
+			$stid = oci_parse($conn, $select);
+
+			oci_execute($stid);
+
+
+			$nfields = oci_num_fields($stid);
+		
+			
+			for ($i = 1; $i<=$nfields; $i++){
+				$field = oci_field_name($stid, $i);
+				
+			}
+			
+			oci_execute($stid);
+
+			$egyenleg = -1;
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+				
+				
+				foreach ($row as $item) {
+					
+					$egyenleg = $item;
+				}
+				
+			}
+			
+			
+			oci_close($conn);
+			return $egyenleg;
 		}	
 		if(isset($_POST['name']) && chekUser($_POST['name'])) {
 			//session_start();
@@ -81,7 +129,13 @@
 			echo '<br>'."<p class = 'error'>Helytelen felhasználó név</p>";
 		}
 		if(isset($_SESSION['name'])) {
-			echo "<a href='login.php?logout=true'>Kijelentkezés</a>";
+			$nev = $_SESSION['name'];
+			$egyen = getEgyenleg($nev);
+			echo "<div class = 'welcome'>";
+			echo "<h2>Üdv $nev!</h2>";
+			echo "<p class = 'egyen'>Egyenleged: $egyen Ft</p>";
+			echo "<a href='login.php?logout=true' class='logout'>Kijelentkezés</a>";
+			echo "</div>";
 		}
 		if(isset($_GET['logout']) && $_GET['logout']){
 			// remove all session variables
