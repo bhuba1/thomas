@@ -48,6 +48,11 @@ legend {
 	text-align:center;
 	font-size: 20px;
 }
+.error {
+	color:red;
+	margin: 0 auto;
+	text-align: center;
+}
 .center {
 	text-align: center;
 	color: red;
