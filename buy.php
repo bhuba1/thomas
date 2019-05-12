@@ -64,7 +64,7 @@
 				foreach ($row as $item) {
 					echo '<td>' . $item . '</td>';
 				}
-				echo '<td>' . $_POST['ar'] . '</td>';
+				echo '<td>' . $_POST['ar'] . 'Ft</td>';
 				echo '</tr>';
 			}
 			echo '</table>';
