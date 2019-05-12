@@ -110,8 +110,59 @@
 			
 			oci_close($conn);
 			return $egyenleg;
-		}	
-		if(isset($_POST['name']) && chekUser($_POST['name'])) {
+		}
+
+		function chekPass($user,$pass) {
+			
+
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+
+			if(!$conn) {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+					
+			}else {
+				//echo "Sikeres kapcsolodás!";
+			}
+
+			
+			
+
+			$select = "SELECT jelszo FROM ugyfel WHERE nev = '$user' ORDER BY 1";
+			
+			$stid = oci_parse($conn, $select);
+
+			oci_execute($stid);
+
+
+			$nfields = oci_num_fields($stid);
+		
+			
+			for ($i = 1; $i<=$nfields; $i++){
+				$field = oci_field_name($stid, $i);
+				
+			}
+			
+			oci_execute($stid);
+
+			$realPass = "";
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+				
+				foreach ($row as $item) {
+					$realPass = $item;
+				}
+			}
+			if(!strcmp($realPass, $pass)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+			
+			oci_close($conn);
+		}
+
+		if(isset($_POST['name']) && chekUser($_POST['name']) && chekPass($_POST['name'],$_POST['pass'])) {
 			//session_start();
 			$_SESSION['name'] = $_POST['name'];
 
@@ -121,12 +172,15 @@
 			
 		}else if(!isset($_SESSION['name'])){
 			echo "<form method='POST'>
-				<input type='text' name='name'/>
+				<label for = 'name' style=' margin: 0 auto;text-align: center;'>Név</label>
+				<input type='text' name='name' required/>
+				<label for = 'pass' style=' margin: 0 auto;text-align: center;margin-top: 10px;'>Jelszó</label>
+				<input type='password' name='pass' required/>
 				<input type='submit' name = '' value='Bejelentkezés'/>
 				</form>";
 		}
-		if(isset($_POST['name']) && !chekUser($_POST['name'])) {
-			echo '<br>'."<p class = 'error'>Helytelen felhasználó név</p>";
+		if(isset($_POST['name']) && isset($_POST['pass']) && (!chekUser($_POST['name']) || !chekPass($_POST['name'],$_POST['pass']))) {
+			echo '<br>'."<p class = 'error'>Helytelen felhasználó név vagy jelszó</p>";
 		}
 		if(isset($_SESSION['name'])) {
 			$nev = $_SESSION['name'];
