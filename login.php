@@ -161,6 +161,142 @@
 			
 			oci_close($conn);
 		}
+		function getId($name) {
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+
+			if(!$conn) {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+
+			}else {
+					//echo "Sikeres kapcsolodás!";
+			}
+
+
+			$select = "Select id FROM ugyfel WHERE nev = '$name'";
+
+			$stid = oci_parse($conn, $select);
+
+			oci_execute($stid);
+
+
+			$nfields = oci_num_fields($stid);
+
+			
+			for ($i = 1; $i<=$nfields; $i++){
+				$field = oci_field_name($stid, $i);
+				
+			}
+			
+			oci_execute($stid);
+
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+
+				
+				$ugyid = -1;
+				foreach ($row as $item) {
+					
+					$ugyid = $item;
+				}	
+			}
+			
+			oci_close($conn);
+			return $ugyid;
+		}
+
+		function getJaratIds($id) {
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+
+			if(!$conn) {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+
+			}else {
+					//echo "Sikeres kapcsolodás!";
+			}
+
+
+			$select = "Select jarat FROM foglalas WHERE ugyfel = '$id'";
+
+			$stid = oci_parse($conn, $select);
+
+			oci_execute($stid);
+
+
+			$nfields = oci_num_fields($stid);
+
+			
+			for ($i = 1; $i<=$nfields; $i++){
+				$field = oci_field_name($stid, $i);
+				
+			}
+			
+			oci_execute($stid);
+			$jaratok = [];
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+
+				
+				
+
+				foreach ($row as $item) {
+					
+					array_push($jaratok,$item);
+					
+				}	
+			}
+			
+			oci_close($conn);
+			return $jaratok;
+		}
+
+		function createTable($s,$text) {
+
+			$conn = oci_connect('system', 'cool', 'localhost/thomas','UTF8');
+
+			if(!$conn) {
+				$e = oci_error();
+				trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+
+			}else {
+					//echo "Sikeres kapcsolodás!";
+			}
+
+			echo "<h3>".$text."</h3>";
+			echo '<table border="0" class = "table-dark">';
+
+			$select = $s;
+
+			$stid = oci_parse($conn, $select);
+
+			oci_execute($stid);
+
+
+			$nfields = oci_num_fields($stid);
+
+			echo '<tr>';
+			for ($i = 1; $i<=$nfields; $i++){
+				$field = oci_field_name($stid, $i);
+				echo '<th>' . $field . '</th>';
+			}
+			
+			echo '</tr>';
+
+
+			oci_execute($stid);
+
+
+			while ( $row = oci_fetch_array($stid, OCI_RETURN_NULLS + OCI_ASSOC )) {
+
+				echo '<tr>';
+				foreach ($row as $item) {
+					echo '<td>' . $item . '</td>';
+				}
+				
+				echo '</tr>';
+			}
+			echo '</table>';
+			oci_close($conn);
+		}
 
 		if(isset($_POST['name']) && chekUser($_POST['name']) && chekPass($_POST['name'],$_POST['pass'])) {
 			//session_start();
@@ -190,6 +326,18 @@
 			echo "<p class = 'egyen'>Egyenleged: $egyen Ft</p>";
 			echo "<a href='login.php?logout=true' class='logout'>Kijelentkezés</a>";
 			echo "</div>";
+			
+			$jaratok = getJaratIds(getId($_SESSION['name']));
+			$select = "SELECT * FROM jarat WHERE ";
+			
+			foreach ($jaratok as $jarat) {
+				$select .= "id = '$jarat' OR ";
+			}
+			$select = substr($select, 0, -3);
+			
+			$text = "Jaratok amikre foglaltál jegyet";
+			
+			createTable($select,$text);
 		}
 		if(isset($_GET['logout']) && $_GET['logout']){
 			// remove all session variables
