@@ -328,16 +328,22 @@
 			echo "</div>";
 			
 			$jaratok = getJaratIds(getId($_SESSION['name']));
-			$select = "SELECT * FROM jarat WHERE ";
+			if(isset($jaratok[0])) {
+				$select = "SELECT * FROM jarat WHERE ";
 			
-			foreach ($jaratok as $jarat) {
-				$select .= "id = '$jarat' OR ";
+				foreach ($jaratok as $jarat) {
+					$select .= "id = '$jarat' OR ";
+				}
+				$select = substr($select, 0, -3);
+				
+				$text = "Jaratok amikre foglaltál jegyet";
+				
+				createTable($select,$text);
 			}
-			$select = substr($select, 0, -3);
+			else {
+				echo "<p class = 'error'>Még nem foglaltál jegyeket.</p>";
+			}
 			
-			$text = "Jaratok amikre foglaltál jegyet";
-			
-			createTable($select,$text);
 		}
 		if(isset($_GET['logout']) && $_GET['logout']){
 			// remove all session variables

@@ -379,7 +379,11 @@ $tns = "
 			</tr>
 			<tr>
 				<th>Név:</th>
-				<td><input type="text" name="Nev" maxlength="50" size="20"/></td>
+				<td><input type="text" name="Nev" maxlength="50" size="20" required/></td>
+			</tr>
+			<tr>
+				<th>Jelszo:</th>
+				<td><input type="password" name="pass" maxlength="50" size="20" required/></td>
 			</tr>
 			<tr>
 				<th>Város:</th>
@@ -387,11 +391,15 @@ $tns = "
 			</tr>
 			<tr>
 				<th>Utca:</th>
-				<td><input type="text" name="Utca" size="50"/></td>
+				<td><input type="text" name="Utca" size="50" required/></td>
 			</tr>
 			<tr>
 				<th>Házszám:</th>
 				<td><input type="number" name="Hazszam" value = '1' min = '1' /></td>
+			</tr>
+			<tr>
+				<th>egyenleg:</th>
+				<td><input type="number" name="egyen" value = '1' min = '0' /></td>
 			</tr>
 				<td></td>
 				<td style="text-align:center;" colspan="2"><input type="submit" name="reg" value="Módosít" class="gomb"/></td>
@@ -428,12 +436,16 @@ $tns = "
 		$Varos = $_POST['Varos'];
 		$Utca = $_POST['Utca'];
 		$Hazszam = $_POST['Hazszam'];
+		$egyen = $_POST['egyen'];
+		$pass = $_POST['pass'];
 		
 		$sql = "UPDATE Ugyfel SET 
 		nev = '$Nev', 
 		varos = '$Varos', 
 		utca = '$Utca', 
-		hazszam = '$Hazszam' WHERE id = '$id'";
+		hazszam = '$Hazszam',
+		jelszo = '$pass',
+		egyenleg = '$egyen' WHERE id = '$id'";
 
 		
 		$stid1 = oci_parse($conn, $q);

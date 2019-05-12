@@ -229,7 +229,7 @@
 				oci_close($conn);
 				echo "Foglalas hozzáadva";
 				
-				header("Location: jarat.php");
+				header("Location: login.php");
 				//echo "<meta http-equiv=refresh content=\"0; URL=jarat.php\">";
 		}
 	?>
